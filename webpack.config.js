@@ -6,8 +6,8 @@ var webpack = require('webpack'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
   TerserPlugin = require('terser-webpack-plugin');
 var { CleanWebpackPlugin } = require('clean-webpack-plugin');
-var ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-var ReactRefreshTypeScript = require('react-refresh-typescript');
+// var ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+// var ReactRefreshTypeScript = require('react-refresh-typescript');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
@@ -93,11 +93,9 @@ var options = {
           {
             loader: require.resolve('ts-loader'),
             options: {
-              getCustomTransformers: () => ({
-                before: [isDevelopment && ReactRefreshTypeScript()].filter(
-                  Boolean
-                ),
-              }),
+              // getCustomTransformers: () => ({
+              //   before: [isDevelopment && ReactRefreshTypeScript()].filter(Boolean),
+              // }),
               transpileOnly: isDevelopment,
             },
           },
@@ -112,9 +110,9 @@ var options = {
           {
             loader: require.resolve('babel-loader'),
             options: {
-              plugins: [
-                isDevelopment && require.resolve('react-refresh/babel'),
-              ].filter(Boolean),
+              // plugins: [
+              //   isDevelopment && require.resolve('react-refresh/babel'),
+              // ].filter(Boolean),
             },
           },
         ],
@@ -129,7 +127,7 @@ var options = {
       .concat(['.js', '.jsx', '.ts', '.tsx', '.css']),
   },
   plugins: [
-    isDevelopment && new ReactRefreshWebpackPlugin(),
+    // isDevelopment && new ReactRefreshWebpackPlugin(),
     new CleanWebpackPlugin({ verbose: false }),
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
@@ -140,7 +138,7 @@ var options = {
           from: 'src/manifest.json',
           to: path.join(__dirname, 'build'),
           force: true,
-          transform: function (content, path) {
+          transform: function (content) {
             // generates the manifest file using the package.json informations
             return Buffer.from(
               JSON.stringify({
