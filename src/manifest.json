@@ -2,6 +2,13 @@
   "manifest_version": 3,
   "name": "Tab Snoozey",
   "description": "Snooze tabs until you need them.",
+
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs" 
+  ],
+
   "options_page": "options.html",
   "background": { "service_worker": "background.bundle.js" },
   "action": {

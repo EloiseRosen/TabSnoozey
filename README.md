@@ -1,2 +1,25 @@
 # TabSnoozey
 A Chrome extension that snoozes tabs until you need them.
+
+## Features
+
+### snooze a tab to a preset time
+
+### snooze a tab to a custom time
+
+### set a recurring snooze
+
+### snooze a whole window
+
+### view your currently snoozed tabs
+
+## Permissions Used
+These are the only permissions used:
+1. *storage*: locally store the URLs and the times they should be reopened. This data doesn't leave your browser!
+
+2. *alarms*: use the Chrome Alarms API to wake up tabs at the right time
+
+3. *tabs*: close the tab when snoozed, and create a new tab with the saved URL at the wake time.
+
+This extension is completely open source! Permissions used can be viewed in the `src/manifest.json` file.
+
