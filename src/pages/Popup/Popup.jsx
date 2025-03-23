@@ -17,8 +17,8 @@ function Popup() {
 
       try {
         // In snoozeId I also specify "snoozedTab_" because there may be other kinds of settings to save in 
-        // local storage (user preferences), and other kinds of alarms (heartbeat to check no tab re-opens were
-        // missed when browser was closed)
+        // local storage (user preferences), and other kinds of alarms (overdue check to check no tab re-opens
+        // were missed when browser was closed)
         const snoozeId =  `snoozedTab_${crypto.randomUUID()}`;
         const reopenTime =  Date.now() + 3 * 60_000; // 3 minutes from now
 
