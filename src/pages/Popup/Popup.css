@@ -9,7 +9,7 @@
 
 body {
   width: 300px;
-  height: 500px;
+  height: 570px;
   margin: 0; /* prevent border of white space */
 }
 
@@ -26,10 +26,12 @@ body {
   align-items: center;
   justify-content: center;
   color: white;
+  gap: 10px;
 }
 
 button {
   color: white;
+  width: 80%;
   font-weight: 600;
   font-family: inherit;
   padding: 12px;
@@ -45,4 +47,23 @@ button {
 }
 .light-pink-button {
   background-color: var(--light-pink);
+}
+
+
+.see-sleeping-tabs-container {
+  /* put icon and text next to each other in 1 line */
+  display: flex;
+  align-items: center;
+  color: var(--light-gray);
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.see-sleeping-tabs-container:hover {
+  color: var(--green);
+}
+.see-sleeping-tabs-container img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
 }

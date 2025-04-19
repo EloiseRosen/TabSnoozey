@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; 
+import icon from '../../assets/img/icon-128.png';
 
 function Popup() {
   const [showCalenderView, setShowCalenderView] = useState(false);
@@ -167,7 +168,18 @@ function Popup() {
             <button className="light-pink-button" onClick={() => setShowCalenderView(true)}>
               recurring
             </button>
-            see sleeping tabs
+
+
+            <div
+              className="see-sleeping-tabs-container"
+              onClick={() => {
+                chrome.runtime.openOptionsPage(); // this goes to manifest.json's options_page location 
+              }}
+            >
+              <img src={icon} alt="Tab Snoozey icon" />
+              <span>see sleeping tabs</span>
+            </div>
+
           </>
         )}
       </div>
