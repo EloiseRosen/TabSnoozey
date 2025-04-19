@@ -1,13 +1,22 @@
+:root {
+  --light-pink: #deb4d5;
+  --med-pink: #ce8ba9;
+  --dark-pink: #b35d6c;
+  --green: #95cfb2;
+  --dark-gray: #424242;
+  --light-gray: #bcbcbc;
+}
+
 body {
   width: 300px;
-  height: 400px;
+  height: 500px;
   margin: 0; /* prevent border of white space */
 }
 
 .outer-container{
   position: absolute;
   inset: 0;
-  background-color: #282c34;
+  background-color: var(--dark-gray);
 }
 
 .inner-container { /* create column of content */
@@ -17,4 +26,23 @@ body {
   align-items: center;
   justify-content: center;
   color: white;
+}
+
+button {
+  color: white;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.dark-pink-button {
+  background-color: var(--dark-pink);
+}
+.med-pink-button {
+  background-color: var(--med-pink);
+}
+.light-pink-button {
+  background-color: var(--light-pink);
 }

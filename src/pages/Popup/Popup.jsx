@@ -149,6 +149,7 @@ function Popup() {
           <>
             {presets.map((preset) => (
               <button
+                className="dark-pink-button"
                 key={preset.buttonLabel}
                 onClick={() => {
                   const reopenTime = preset.calculateTime();
@@ -160,10 +161,10 @@ function Popup() {
             ))}
 
 
-            <button onClick={() => setShowCalenderView(true)}>
+            <button className="med-pink-button" onClick={() => setShowCalenderView(true)}>
               custom time
             </button>
-            <button onClick={() => setShowCalenderView(true)}>
+            <button className="light-pink-button" onClick={() => setShowCalenderView(true)}>
               recurring
             </button>
             see sleeping tabs
