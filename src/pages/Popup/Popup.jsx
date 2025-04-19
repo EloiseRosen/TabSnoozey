@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; 
-import './Popup.css';
 
 function Popup() {
   const [showCalenderView, setShowCalenderView] = useState(false);
@@ -160,11 +159,14 @@ function Popup() {
               </button>
             ))}
 
-            <hr />
 
             <button onClick={() => setShowCalenderView(true)}>
               custom time
             </button>
+            <button onClick={() => setShowCalenderView(true)}>
+              recurring
+            </button>
+            see sleeping tabs
           </>
         )}
       </header>
