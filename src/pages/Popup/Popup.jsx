@@ -125,8 +125,8 @@ function Popup() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="outer-container">
+      <div className="inner-container">
         {showCalenderView ? (
           <>
             <DatePicker
@@ -169,7 +169,7 @@ function Popup() {
             see sleeping tabs
           </>
         )}
-      </header>
+      </div>
     </div>
   );
 }
