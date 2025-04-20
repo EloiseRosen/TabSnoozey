@@ -4,5 +4,5 @@ import Options from './Options';
 import './Options.css';
 
 const container = document.getElementById('app-container');
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
-root.render(<Options title={'Settings'} />);
+const root = createRoot(container);
+root.render(<Options />);

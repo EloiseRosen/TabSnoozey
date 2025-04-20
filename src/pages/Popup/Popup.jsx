@@ -175,14 +175,14 @@ function Popup() {
             />
 
             <br />
-            <button onClick={handleSnoozeCustomTime}>Confirm</button>
-            <button onClick={() => setShowCalenderView(false)}>Cancel</button>
+            <button className="dark-pink"onClick={handleSnoozeCustomTime}>Confirm</button>
+            <button className="light-gray" onClick={() => setShowCalenderView(false)}>Cancel</button>
           </>
         ) : (
           <>
             {presets.map((preset) => (
               <button
-                className="dark-pink-button"
+                className="dark-pink"
                 key={preset.buttonLabel}
                 onClick={() => {
                   const reopenTime = preset.calculateTime();
@@ -194,10 +194,10 @@ function Popup() {
             ))}
 
 
-            <button className="med-pink-button" onClick={() => setShowCalenderView(true)}>
+            <button className="med-pink" onClick={() => setShowCalenderView(true)}>
               custom time
             </button>
-            <button className="light-pink-button" onClick={() => setShowCalenderView(true)}>
+            <button className="light-pink" onClick={() => setShowCalenderView(true)}>
               recurring
             </button>
 

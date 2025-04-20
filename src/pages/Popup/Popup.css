@@ -39,14 +39,17 @@ button {
   border: none;
   cursor: pointer;
 }
-.dark-pink-button {
+.dark-pink {
   background-color: var(--dark-pink);
 }
-.med-pink-button {
+.med-pink{
   background-color: var(--med-pink);
 }
-.light-pink-button {
+.light-pink {
   background-color: var(--light-pink);
+}
+.light-gray {
+  background-color: var(--light-gray);
 }
 
 
