@@ -144,8 +144,8 @@ function Popup() {
           <label className="switch">
             <input
               type="checkbox"
-              checked={toggledToTab}
-              onChange={(e) => setToggledToTab(e.target.checked)}
+              checked={!toggledToTab}
+              onChange={(e) => setToggledToTab(!e.target.checked)}
             />
             <span className="slider"></span>
           </label>
