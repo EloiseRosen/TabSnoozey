@@ -1,8 +1,21 @@
-.OptionsContainer {
-  width: 100%;
-  height: 50vh;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+:root {
+  --light-pink: #deb4d5;
+  --med-pink: #ce8ba9;
+  --dark-pink: #b35d6c;
+  --green: #95cfb2;
+  --dark-gray: #424242;
+  --light-gray: #bcbcbc;
+}
+
+body {
+  background-color: var(--dark-gray);
+  color: white;
+}
+
+.sleeping-tabs-container ul {
+  list-style-type: none;
+}
+
+.sleeping-tabs-container li {
+  margin-bottom: 1rem;
 }
