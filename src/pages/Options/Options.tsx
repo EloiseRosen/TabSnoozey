@@ -4,6 +4,7 @@ import './Options.css';
 interface SnoozedTab {
   id: string; // e.g., "snoozedTab_..."
   url: string;
+  title: string;
   reopenAt: number;
 }
 
@@ -20,8 +21,8 @@ const Options: React.FC = () => {
 
       for (const [key, val] of Object.entries(allItems)) {
         if (key.startsWith('snoozedTab_')) {
-          const { url, reopenAt } = val as { url: string; reopenAt: number };
-          tabList.push({ id: key, url, reopenAt });
+          const { url, title, reopenAt } = val as { url: string; title: string, reopenAt: number };
+          tabList.push({ id: key, url: url, title: title, reopenAt: reopenAt });
         }
       }
 
@@ -79,7 +80,7 @@ const Options: React.FC = () => {
         <ul>
           {sleepingTabsList.map(tab => (
             <li key={tab.id}>
-              <strong>{tab.url}</strong>
+              <strong>{tab.title || tab.url}</strong>
               <br />
               Wakes at: <em>{new Date(tab.reopenAt).toLocaleString()}</em>
               <br />

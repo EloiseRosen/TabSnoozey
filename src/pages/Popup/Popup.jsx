@@ -42,6 +42,7 @@ function Popup() {
       // store the info for this snooze in chrome local storage
       const snoozeInfo = {
         url: activeTab.url,
+        title: activeTab.title || '',
         reopenAt: reopenTime
       };
       await chrome.storage.local.set({ [snoozeId]: snoozeInfo });
