@@ -9,6 +9,8 @@ function Popup() {
   const [customDate, setCustomDate] = useState(new Date());
   const [customTime, setCustomTime] = useState('09:00');
 
+  const [toggledToTab, setToggledToTab] = useState(true);
+
   /**
    * snooze the tab: store tab info in chrome storage, create an alarm to reopen 
    * the tab at `reopenTime`, and close the tab.
@@ -128,6 +130,36 @@ function Popup() {
   return (
     <div className="outer-container">
       <div className="inner-container">
+
+
+        {/* toggle, implemented as a checkbox */}
+        <div className="toggle-container">
+          <span
+            className={`toggle-label ${toggledToTab ? "active" : ""}`}
+            onClick={() => setToggledToTab(true)}
+          >
+            tab
+          </span>
+
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={toggledToTab}
+              onChange={(e) => setToggledToTab(e.target.checked)}
+            />
+            <span className="slider"></span>
+          </label>
+
+          <span
+            className={`toggle-label ${!toggledToTab ? "active" : ""}`}
+            onClick={() => setToggledToTab(false)}
+          >
+            window
+          </span>
+        </div>
+
+
+
         {showCalenderView ? (
           <>
             <DatePicker
