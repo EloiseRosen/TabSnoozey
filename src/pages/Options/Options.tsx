@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Options.css';
+import coffeeMugIcon from '../../assets/img/coffee-mug.svg';
+
 
 interface SnoozedTab {
   id: string; // e.g., "snoozedTab_..."
@@ -84,7 +86,11 @@ const Options: React.FC = () => {
               <br />
               Wakes at: <em>{new Date(tab.reopenAt).toLocaleString()}</em>
               <br />
-              <button onClick={() => handleWakeNow(tab.id)}>Wake Now</button>
+
+              <button className="coffee-button" onClick={() => handleWakeNow(tab.id)}>
+                <img src={coffeeMugIcon} alt="coffee mug" />
+              </button>
+
             </li>
           ))}
         </ul>

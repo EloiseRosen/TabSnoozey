@@ -19,3 +19,14 @@ body {
 .sleeping-tabs-container li {
   margin-bottom: 1rem;
 }
+
+
+.coffee-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.coffee-button img {
+  width: 20px;
+  height: 20px;
+}
