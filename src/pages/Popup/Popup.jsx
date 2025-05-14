@@ -91,6 +91,7 @@ function Popup() {
    * If today is the correct weekday but the time is in the past already, go to next week.
    */
   function getTimeForNextDayOfWeek(targetDayOfWeek, hour, minute) {
+    const now = new Date();
     const date = new Date();
     date.setHours(hour, minute, 0, 0); 
 
