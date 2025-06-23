@@ -1,10 +1,11 @@
 :root {
-  --light-pink: #deb4d5;
+  --light-pink: #d4a8cf;
   --med-pink: #ce8ba9;
   --dark-pink: #b35d6c;
   --bright-pink: #fa99ab;
   --green: #95cfb2;
   --dark-gray: #424242;
+  --med-dark-gray: #5f5f5f;
   --med-gray: #7d7d7d;
   --light-gray: #bcbcbc;
 }
@@ -40,6 +41,7 @@ button {
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  font-size: 15px;
 }
 .dark-pink {
   background-color: var(--dark-pink);
@@ -60,7 +62,7 @@ button {
   display: flex;
   align-items: center;
   color: var(--light-gray);
-  font-size: 15px;
+  font-size: 17px;
   cursor: pointer;
   margin-top: 10px;
 }
@@ -82,7 +84,7 @@ button {
   gap: 10px; /* space between the toggle and the labels */
 }
 .toggle-label {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--light-gray); /* color of inactive label */
   cursor: pointer;
 }
@@ -136,7 +138,7 @@ input:checked + .slider:before {
 }
 .day-label {
   display: block;
-  font-size: 14px;
+  font-size: 17px;
   color: var(--light-gray);
   margin-bottom: 5px;
 }
@@ -151,6 +153,7 @@ input:checked + .slider:before {
 .month-day-selection label {
   display: block;
   margin-bottom: 4px;
+  font-size: 16px;
 }
 .month-day-grid {
   display: grid;
@@ -171,3 +174,127 @@ input:checked + .slider:before {
 .month-day-button.selected {
   background-color: var(--bright-pink);
 }
+
+/* Calendar */
+.react-datepicker {
+  background-color: var(--med-dark-gray) !important;
+  border: 1px solid var(--med-gray) !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  color: white !important;
+}
+.react-datepicker__header {
+  background-color: var(--dark-gray) !important;
+  border-bottom: 1px solid var(--med-gray) !important;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 8px 0 !important;
+}
+.react-datepicker__current-month {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  margin-bottom: 10px !important;
+}
+.react-datepicker__day-names {
+  margin-bottom: 0px !important;
+}
+.react-datepicker__day-name {
+  color: var(--light-gray) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  width: 26px !important;
+  text-align: center !important;
+}
+.react-datepicker__month {
+  margin: 8px !important;
+}
+.react-datepicker__week {
+  display: flex !important;
+  justify-content: space-around !important;
+  margin-bottom: 2px !important;
+}
+.react-datepicker__day {
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  color: white !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+}
+.react-datepicker__day:hover {
+  background-color: var(--light-gray) !important;
+  color: var(--dark-gray) !important;
+}
+.react-datepicker__day--today {
+  background-color: transparent !important;
+  color: white !important;
+}
+.react-datepicker__day--selected {
+  background-color: var(--bright-pink) !important;
+  color: black !important;
+  font-weight: 600 !important;
+}
+/* ensure selected state works even on today */
+.react-datepicker__day--selected.react-datepicker__day--today {
+  background-color: var(--bright-pink) !important;
+  color: black !important;
+  font-weight: 600 !important;
+}
+.react-datepicker__day--selected:hover {
+  background-color: var(--bright-pink) !important;
+  color: black !important;
+}
+.react-datepicker__day--outside-month { /* the day numbers that aren't part of this month */
+  color: var(--light-gray) !important;
+  opacity: 0.5 !important;
+}
+.react-datepicker__navigation--previous {
+  top: 10px !important;
+}
+.react-datepicker__navigation--next {
+  top: 10px !important;
+}
+.react-datepicker__navigation-icon::before {
+  border-color: white !important;
+}
+.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before { /* when hovering over the nav arrows, make then green */
+  border-color: var(--green) !important;
+}
+
+
+
+/* time picker */
+input[type="time"] {
+  background-color: transparent !important;
+  border: 1px solid var(--med-gray) !important;
+  border-radius: 8px !important;
+  color: white !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  padding: 8px 10px !important;
+  width: 140px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+input[type="time"]:focus {
+  outline: none !important;
+  border-color: var(--bright-pink) !important;
+  box-shadow: 0 0 0 2px rgba(250, 153, 171, 0.3) !important;
+}
+/* the clock icon */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background-color: var(--med-gray) !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+}
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--green) !important;
+}
+
