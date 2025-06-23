@@ -11,6 +11,8 @@ import {
 } from '../../timeUtils'
 
 
+const SPECIAL_PAGES_MESSAGE = `Note: Special pages like "chrome-extension://" or "about:" cannot be snoozed.`;
+
 function Popup() {
   // views are 
   // 1. MAIN_MENU
@@ -32,7 +34,22 @@ function Popup() {
   const [toggledToTab, setToggledToTab] = useState(true);
 
   /**
-   * snooze the tab: store tab info in chrome storage, create an alarm to reopen 
+   * Get all tabs to snooze based on the toggle state.
+   * If toggledToTab is true, return only the active tab.
+   * If toggledToTab is false, return all tabs in the current window.
+   */
+  async function getTabsToSnooze() {
+    if (toggledToTab) {
+      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      return tabs;
+    } else {
+      const tabs = await chrome.tabs.query({ currentWindow: true });
+      return tabs;
+    }
+  }
+
+  /**
+   * snooze the tab(s): store tab info in chrome storage, create an alarm to reopen 
    * the tab at `reopenTime`, and close the tab.
    *
    * If `reopenTime` is invalid or in the past, show alert and do nothing.
@@ -43,38 +60,59 @@ function Popup() {
       return;
     }
 
-    // get the active tab
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (!tabs.length) {
-      return;
-    }
-    const activeTab = tabs[0];
-    if (!activeTab.id || !activeTab.url) {
-      return;
-    }
-
     try {
+      const tabsToSnooze = await getTabsToSnooze();
+      
+      if (!tabsToSnooze.length) {
+        return;
+      }
+
+      const tabIdsToClose = [];
+      let hasSkippedTabs = false;
+
+      for (const tab of tabsToSnooze) {
+        if (!tab.id || !tab.url) {
+          continue;
+
+        }
+        // check if this is a special URL that can't be reopened
+        if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') ||
+            tab.url.startsWith('edge://') || tab.url.startsWith('about:')) {
+          hasSkippedTabs = true;
+          continue;
+        }
+
       // In snoozeId I also specify "snoozedTab_" because there may be other kinds of settings to save in 
       // local storage (user preferences), and other kinds of alarms (overdue check to check no tab re-opens
       // were missed when browser was closed)
-      const snoozeId =  `snoozedTab_${crypto.randomUUID()}`;
+        const snoozeId =  `snoozedTab_${crypto.randomUUID()}`;
 
-      // store the info for this snooze in chrome local storage
-      const snoozeInfo = {
-        url: activeTab.url,
-        title: activeTab.title || '',
-        reopenAt: reopenTime
-      };
-      await chrome.storage.local.set({ [snoozeId]: snoozeInfo });
+        // store the info for this snooze in chrome local storage
+        const snoozeInfo = {
+          url: tab.url,
+          title: tab.title || '',
+          reopenAt: reopenTime
+        };
+        await chrome.storage.local.set({ [snoozeId]: snoozeInfo });
 
-      // create alarm
-      chrome.alarms.create(snoozeId, { when: reopenTime });
+        // create alarm
+        chrome.alarms.create(snoozeId, { when: reopenTime });
 
-      // close the tab
-      chrome.tabs.remove(activeTab.id);
+        tabIdsToClose.push(tab.id);
+      }
+
+      // show alert if any tabs were skipped
+      if (hasSkippedTabs) {
+        alert(SPECIAL_PAGES_MESSAGE);
+      }
+
+      // close all the tabs at once
+      if (tabIdsToClose.length > 0) {
+        chrome.tabs.remove(tabIdsToClose);
+      }
 
     } catch (error) {
-      console.error('errror snoozing tab:', error);
+      console.error('error snoozing tab(s):', error);
     }
   }
 
@@ -153,43 +191,65 @@ function Popup() {
    * Create a recurring snooze.
    */
   async function createRecurringSnooze(firstOccurrence, recurringConfig) {
-    // Get the active tab
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (!tabs.length) {
-      return;
-    }
-    const activeTab = tabs[0];
-    if (!activeTab.id || !activeTab.url) {
-      return;
-    }
-
     try {
-      const recurringId = `recurringSnooze_${crypto.randomUUID()}`;
-      const snoozeId = `snoozedTab_${crypto.randomUUID()}`;
+      const tabsToSnooze = await getTabsToSnooze();
       
-      // store the recurring info
-      const recurringInfo = {
-        url: activeTab.url,
-        title: activeTab.title || '',
-        config: recurringConfig,
-        nextOccurrence: firstOccurrence
-      };
-      await chrome.storage.local.set({ [recurringId]: recurringInfo });
+      if (!tabsToSnooze.length) {
+        return;
+      }
+
+      const tabIdsToClose = [];
+      let hasSkippedTabs = false;
+
+      for (const tab of tabsToSnooze) {
+        if (!tab.id || !tab.url) {
+          continue;
+        }
+
+        // check if this is a special URL that can't be reopened
+        if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') ||
+            tab.url.startsWith('edge://') || tab.url.startsWith('about:')) {
+          hasSkippedTabs = true;
+          continue;
+        }
+
+        const recurringId = `recurringSnooze_${crypto.randomUUID()}`;
+        const snoozeId = `snoozedTab_${crypto.randomUUID()}`;
+        
+        // store the recurring info
+        const recurringInfo = {
+          url: tab.url,
+          title: tab.title || '',
+          config: recurringConfig,
+          nextOccurrence: firstOccurrence
+        };
+        await chrome.storage.local.set({ [recurringId]: recurringInfo });
+        
+        // Store the info for this specific snooze occurrence
+        const snoozeInfo = {
+          url: tab.url,
+          title: tab.title || '',
+          reopenAt: firstOccurrence,
+          recurringId: recurringId // reference to the recurring config
+        };
+        await chrome.storage.local.set({ [snoozeId]: snoozeInfo });
+        
+        // dreate alarm for the first occurrence
+        chrome.alarms.create(snoozeId, { when: firstOccurrence });
+        
+        // add to list of tabs to close
+        tabIdsToClose.push(tab.id);
+      }
+
+      // show alert if any tabs were skipped
+      if (hasSkippedTabs) {
+        alert(SPECIAL_PAGES_MESSAGE);
+      }
       
-      // Store the info for this specific snooze occurrence
-      const snoozeInfo = {
-        url: activeTab.url,
-        title: activeTab.title || '',
-        reopenAt: firstOccurrence,
-        recurringId: recurringId // reference to the recurring config
-      };
-      await chrome.storage.local.set({ [snoozeId]: snoozeInfo });
-      
-      // dreate alarm for the first occurrence
-      chrome.alarms.create(snoozeId, { when: firstOccurrence });
-      
-      // close the tab
-      chrome.tabs.remove(activeTab.id);
+      // close all the tabs at once
+      if (tabIdsToClose.length > 0) {
+        chrome.tabs.remove(tabIdsToClose);
+      }
       
     } catch (error) {
       console.error('error creating recurring snooze:', error);
