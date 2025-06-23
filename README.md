@@ -7,7 +7,7 @@ A Chrome extension that snoozes your tabs until you need them.
 
 ### snooze a tab to a custom time
 
-### set a recurring snooze
+### set a recurring snooze (by week or by month)
 
 ### snooze a whole window
 

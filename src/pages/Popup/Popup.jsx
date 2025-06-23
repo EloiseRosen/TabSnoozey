@@ -82,9 +82,6 @@ function Popup() {
           continue;
         }
 
-      // In snoozeId I also specify "snoozedTab_" because there may be other kinds of settings to save in 
-      // local storage (user preferences), and other kinds of alarms (overdue check to check no tab re-opens
-      // were missed when browser was closed)
         const snoozeId =  `snoozedTab_${crypto.randomUUID()}`;
 
         // store the info for this snooze in chrome local storage
@@ -128,7 +125,7 @@ function Popup() {
   }
 
   const presets = [
-    { buttonLabel: 'testing: 1 min', calculateTime: () => Date.now() + 1 * 60_000 },
+    // { buttonLabel: 'testing: 1 min', calculateTime: () => Date.now() + 1 * 60_000 },
     { buttonLabel: '1 hour', calculateTime: () => Date.now() + 60 * 60_000 },
     { buttonLabel: '5pm today', calculateTime: () => getTimeForTodayOrTomorrow(17, 0) },
     { buttonLabel: '6am tomorrow', calculateTime: () => getTimeDaysFromNow(6, 0, 1) },
