@@ -387,30 +387,19 @@ function Popup() {
             )}
 
             {recurringMode === 'MONTH' && (
-              <div style={{ marginTop: '12px' }}>
-                <label style={{ display: 'block', marginBottom: '4px' }}>
+              <div className="month-day-selection">
+                <label>
                   Select Day of Month
                 </label>
-                {/* a 5-row grid for days 1–31, no day-of-week labels since they change per month. */}
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(7, 30px)',
-                    gap: '6px',
-                  }}
-                >
+                <div className="month-day-grid">
                   {Array.from({ length: 31 }).map((_, idx) => {
                     const dayNum = idx + 1; // 1-31
                     return (
                       <button
                         key={dayNum}
                         type="button"
+                        className={`month-day-button ${selectedMonthDay === dayNum ? 'selected' : ''}`}
                         onClick={() => setSelectedMonthDay(dayNum)}
-                        style={{
-                          backgroundColor: selectedMonthDay === dayNum ? '#fa99a9' : '#eee',
-                          border: '1px solid #ccc',
-                          cursor: 'pointer'
-                        }}
                       >
                         {dayNum}
                       </button>

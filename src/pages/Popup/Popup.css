@@ -2,6 +2,7 @@
   --light-pink: #deb4d5;
   --med-pink: #ce8ba9;
   --dark-pink: #b35d6c;
+  --bright-pink: #fa99ab;
   --green: #95cfb2;
   --dark-gray: #424242;
   --med-gray: #7d7d7d;
@@ -141,4 +142,32 @@ input:checked + .slider:before {
 }
 .day-label input {
   margin-right: 7px; /* space between checkbox and label */
+}
+
+/* recurring monthly snooze set up */
+.month-day-selection {
+  margin-top: 12px;
+}
+.month-day-selection label {
+  display: block;
+  margin-bottom: 4px;
+}
+.month-day-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 30px);
+  gap: 6px;
+}
+.month-day-button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  cursor: pointer;
+  color: black;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.month-day-button.selected {
+  background-color: var(--bright-pink);
 }
