@@ -127,3 +127,18 @@ button {
 input:checked + .slider:before {
   transform: translateX(20px);
 }
+
+/* recurring weekly snooze set up */
+.weekly-days-container {		
+  display: flex;		
+  flex-direction: column;		
+}
+.day-label {
+  display: block;
+  font-size: 14px;
+  color: var(--light-gray);
+  margin-bottom: 5px;
+}
+.day-label input {
+  margin-right: 7px; /* space between checkbox and label */
+}

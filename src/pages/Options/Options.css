@@ -48,27 +48,44 @@ body {
   justify-content: space-between;
   margin: 0 auto 12px;
   padding: 12px 16px;
+  border-left: 4px solid var(--green);
 }
 
 /* container for left side of card (title) */
 .left-side-of-card {
-  font-weight: 600;
   flex: 1;             
+  overflow: hidden;
+  margin-right: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-title {
+  font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-right: 16px;
+  margin-bottom: 4px;
 }
 
 /* container for right side of card (reopen time and wake/delete buttons) */
 .right-side-of-card {
-  gap: 32px;
+  gap: 15px;
   display: flex;
   align-items: center;
 }
 
-.wake-time-text {
+.schedule-description, .wake-time-text {
   font-size: 1rem;
+  font-weight: 600;
+  color: var(--light-pink);
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.next-occurrence {
+  font-size: 1rem;
+  color: var(--light-gray);
+  font-weight: 500;
 }
 
 .coffee-button,
@@ -85,4 +102,29 @@ body {
 .delete-button img {
   width: 26px;
   height: 26px;
+}
+
+.section-heading {
+  margin-top: 40px;
+  margin-bottom: 0px;
+  text-align: left;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 28px;
+}
+
+.recurring {
+  color: var(--med-pink);
+}
+
+.one-off {
+  color: var(--dark-pink);
+}
+
+.no-snoozes-message {
+  text-align: center;
+  color: var(--light-gray);
+  font-style: italic;
+  margin: 20px 0;
 }
