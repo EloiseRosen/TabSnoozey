@@ -323,6 +323,7 @@ function Popup() {
               selected={customDate}
               onChange={(date) => setCustomDate(date)}
               inline
+              fixedHeight
             />
             <input
               type="time"
