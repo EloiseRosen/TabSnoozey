@@ -249,13 +249,9 @@ const Options: React.FC = () => {
    */
   async function handleWakeNow(id: string) {
     try {
-      let tab: SnoozedTab | null = null;
-      for (const currTab of sleepingTabsList) {
-        if (currTab.id === id) {
-          tab = currTab;
-          break;
-        }
-      }
+      await chrome.alarms.clear(id).catch(() => { /* alarm may not exist, ignore */ });
+
+      const tab = sleepingTabsList.find(t => t.id === id);
       if (!tab) {
         console.error('tab not found. id:', id);
         return;
@@ -279,6 +275,7 @@ const Options: React.FC = () => {
    */
   async function handleDeleteSnooze(id: string) {
     try {
+      await chrome.alarms.clear(id).catch(() => { /* alarm may not exist, ignore */ });
       await chrome.storage.local.remove(id);
       await updateSnoozedTabsList();
     } catch (error) {
