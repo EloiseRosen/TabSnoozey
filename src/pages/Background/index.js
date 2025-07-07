@@ -51,6 +51,9 @@ chrome.alarms.onAlarm.addListener(async (alarm) => { // listen for alarms
 
           if (Date.now() >= reopenAt) {
             await chrome.tabs.create({ url });
+            if (val.recurringId) {
+              await scheduleNextRecurrence(val.recurringId);
+            }
             await chrome.storage.local.remove(key);
           }
         }
