@@ -263,6 +263,18 @@ const Options: React.FC = () => {
     }
   }
 
+  /**
+   * Open URL immediately without altering storage, for "wake now" functionality in recurring schedules.
+   */
+  async function handleOpenRecurring(url: string) {
+    try {
+      await chrome.tabs.create({ url });
+    } catch (error) {
+      console.error('error opening recurring tab:', error);
+    }
+  }
+
+
   return (
     <div className="sleeping-tabs-container">
       <h1 className="page-heading">
@@ -295,6 +307,14 @@ const Options: React.FC = () => {
               </div>
               
               <div className="right-side-of-card">
+                <button
+                  className="coffee-button"
+                  onClick={() => handleOpenRecurring(schedule.url)}
+                  data-tooltip="Wake now"
+                >
+                  <img src={coffeeMugIcon} alt="coffee mug" />
+                </button>
+
                 <button
                   className="delete-button"
                   onClick={() => handleDeleteRecurringSnooze(schedule.id)}
