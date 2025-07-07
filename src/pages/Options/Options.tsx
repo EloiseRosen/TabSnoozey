@@ -76,10 +76,14 @@ const Options: React.FC = () => {
   function formatRecurringSchedule(config: RecurringConfig): string {
     // create a nice time string like "2:30 PM" or "14:30" based on user's locale
     const [hour, minute] = config.time.split(':').map(Number);
+
+    const timeDate = new Date();
+    timeDate.setHours(hour, minute, 0, 0);
+
     const timeStr = new Intl.DateTimeFormat(undefined, { // undefined -> use system locale
       hour: 'numeric',
       minute: '2-digit',
-    }).format(new Date().setHours(hour, minute));
+    }).format(timeDate);
     
     if (config.type === 'WEEKLY') {
       // converts boolean array [false, true, false, true, ...] to nice day names ['Mon', 'Wed', ...]
@@ -194,6 +198,25 @@ const Options: React.FC = () => {
   useEffect(() => {
     updateSnoozedTabsList();
     updateRecurringSnoozesList();
+  }, []);
+
+  /**
+   * When something changes the snoozed tabs, the sleeping tabs page should remain updated.
+   */
+  useEffect(() => {
+    function handleStorageChange(
+      _changes: { [key: string]: chrome.storage.StorageChange },
+      areaName: string
+    ) {
+      if (areaName === 'local') {
+        updateSnoozedTabsList();
+        updateRecurringSnoozesList();
+      }
+    }
+    chrome.storage.onChanged.addListener(handleStorageChange);
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange);
+    };
   }, []);
 
 
