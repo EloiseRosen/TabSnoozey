@@ -13,6 +13,16 @@ import {
 
 const SPECIAL_PAGES_MESSAGE = `Note: Special pages like "chrome-extension://" or "about:" cannot be snoozed.`;
 
+/**
+ * Indicate if URL is a special page that cannot be reopened later.
+ */
+function isSpecialPage(url) {
+  return /^(?:about|chrome|chrome-untrusted|chrome-extension|edge|view-source|devtools):/i.test(
+    url
+  );
+}
+
+
 function Popup() {
   // views are 
   // 1. MAIN_MENU
@@ -76,8 +86,7 @@ function Popup() {
 
         }
         // check if this is a special URL that can't be reopened
-        if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') ||
-            tab.url.startsWith('edge://') || tab.url.startsWith('about:')) {
+        if (isSpecialPage(tab.url)) {
           hasSkippedTabs = true;
           continue;
         }
@@ -204,8 +213,7 @@ function Popup() {
         }
 
         // check if this is a special URL that can't be reopened
-        if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') ||
-            tab.url.startsWith('edge://') || tab.url.startsWith('about:')) {
+        if (isSpecialPage(tab.url)) {
           hasSkippedTabs = true;
           continue;
         }
