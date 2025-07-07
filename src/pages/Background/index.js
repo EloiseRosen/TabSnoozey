@@ -1,5 +1,16 @@
 import { findNextWeeklyOccurrence, findNextMonthlyOccurrence } from  '../../timeUtils'
 
+function ensureOverdueAlarm() {
+  chrome.alarms.get('checkForOverdue_', alarm => {
+    if (!alarm) {
+      chrome.alarms.create('checkForOverdue_', { periodInMinutes: 5 });
+    }
+  });
+}
+
+ensureOverdueAlarm(); // call once on every service‑worker start‑up
+chrome.runtime.onStartup.addListener(ensureOverdueAlarm); // repeat after browser restart
+
 chrome.runtime.onInstalled.addListener(() => { // listen for when extension is installed/updated
   chrome.alarms.create('checkForOverdue_', { // set up recurring alarm to check for overdue tabs
     periodInMinutes: 5,
