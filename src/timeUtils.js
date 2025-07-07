@@ -36,8 +36,8 @@ export function getTimeForTodayOrTomorrow(hour, minute) {
  */
 export function getTimeDaysFromNow(hour, minute, daysFromNow) {
   const date = new Date();
-  date.setHours(hour, minute, 0, 0); 
-  date.setDate(date.getDate() + daysFromNow);
+  date.setDate(date.getDate() + daysFromNow); // add calendar days first to avoid daylight savings time issues
+  date.setHours(hour, minute, 0, 0);
   return date.getTime();
 }
 
