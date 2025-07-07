@@ -60,12 +60,17 @@ body {
   flex-direction: column;
 }
 
-.tab-title {
+.tab-title-link {
   font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-bottom: 4px;
+  color: inherit;
+  text-decoration: none;
+}
+.tab-title-link:hover {
+  text-decoration: underline;
 }
 
 /* container for right side of card (reopen time and wake/delete buttons) */

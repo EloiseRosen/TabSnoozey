@@ -278,7 +278,14 @@ const Options: React.FC = () => {
           recurringSnoozesList.map(schedule => (
             <li key={schedule.id} className="snoozed-item-card recurring-item">
               <div className="left-side-of-card">
-                <div className="tab-title">{schedule.title || schedule.url}</div>
+                 <a
+                  className="tab-title-link"
+                  href={schedule.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {schedule.title || schedule.url} 
+                </a>
                 <div className="schedule-description">
                   {formatRecurringSchedule(schedule.config)}
                 </div>
@@ -311,7 +318,14 @@ const Options: React.FC = () => {
           sleepingTabsList.map(tab => (
             <li key={tab.id} className="snoozed-item-card">
               <div className="left-side-of-card">
-                <div className="tab-title">{tab.title || tab.url}</div>
+                <a
+                  className="tab-title-link"
+                  href={tab.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {tab.title || tab.url}
+                </a>
                 <div className="wake-time-text">
                   {formatReopenTime(tab.reopenAt)}
                 </div>
