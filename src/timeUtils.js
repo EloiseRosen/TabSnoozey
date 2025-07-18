@@ -1,4 +1,16 @@
 /**
+ * Check for DST gap, fix if applicable.
+ */
+function setTimeSafely(date, hour, minute) {
+  date.setHours(hour, minute, 0, 0);
+  if (date.getHours() !== hour || date.getMinutes() !== minute) {
+    while (date.getMinutes() !== minute) {
+      date.setMinutes(date.getMinutes() + 1);
+    }
+  }
+}
+
+/**
  * Return a Date for the next occurrence of `targetDayOfWeek` at the specified
  * hour and minute.
  * 0 is Sunday, 1 is Monday, ..., 6 is Saturday
@@ -7,11 +19,12 @@
 export function getTimeForNextDayOfWeek(targetDayOfWeek, hour, minute) {
   const now = new Date();
   const date = new Date();
-  date.setHours(hour, minute, 0, 0);
+  setTimeSafely(date, hour, minute);
 
   // increment date until it matches the targetDayOfWeek AND is in future
   while (date.getDay() !== targetDayOfWeek || date <= now) {
     date.setDate(date.getDate() + 1);
+    setTimeSafely(date, hour, minute);
   }
   return date.getTime();
 }
@@ -23,9 +36,10 @@ export function getTimeForNextDayOfWeek(targetDayOfWeek, hour, minute) {
 export function getTimeForTodayOrTomorrow(hour, minute) {
   const now = new Date();
   const date = new Date();
-  date.setHours(hour, minute, 0, 0); 
+  setTimeSafely(date, hour, minute); 
   if (date <= now) {
     date.setDate(date.getDate() + 1); // use tomorrow instead
+    setTimeSafely(date, hour, minute);
   }
   return date.getTime();
 }
@@ -37,7 +51,7 @@ export function getTimeForTodayOrTomorrow(hour, minute) {
 export function getTimeDaysFromNow(hour, minute, daysFromNow) {
   const date = new Date();
   date.setDate(date.getDate() + daysFromNow); // add calendar days first to avoid daylight savings time issues
-  date.setHours(hour, minute, 0, 0);
+  setTimeSafely(date, hour, minute);
   return date.getTime();
 }
 
@@ -66,7 +80,7 @@ export function findNextWeeklyOccurrence(selectedDaysArr, hour, minute) {
       // if the snooze is today's day of week and the time has already passed, we need to wait until next week
       if (daysUntil === 0) {
         const selectedTime = new Date();
-        selectedTime.setHours(hour, minute, 0, 0);
+        setTimeSafely(selectedTime, hour, minute);
         if (selectedTime <= now) {
           daysUntil = 7; // wait until next week
         }
@@ -77,7 +91,7 @@ export function findNextWeeklyOccurrence(selectedDaysArr, hour, minute) {
         minDaysUntilNext = daysUntil;
         soonestOccurrence = new Date();
         soonestOccurrence.setDate(soonestOccurrence.getDate() + daysUntil);
-        soonestOccurrence.setHours(hour, minute, 0, 0);
+        setTimeSafely(soonestOccurrence, hour, minute);
       }
     }
   }
@@ -108,7 +122,7 @@ export function findNextMonthlyOccurrence(selectedDay, hour, minute) {
     const actualDay = Math.min(day, lastDay); // example: if user selected day 31, but there are only 29 days in this month, use 29
     
     const date = new Date(year, month, actualDay);
-    date.setHours(hour, minute, 0, 0);
+    setTimeSafely(date, hour, minute);
     return date;
   }
   
