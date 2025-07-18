@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "Tab Snoozey",
   "description": "Snooze tabs until you need them.",
+  "version": "1.0.0",
 
   "permissions": [
     "storage",
