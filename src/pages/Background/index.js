@@ -58,12 +58,13 @@ chrome.alarms.onAlarm.addListener(async (alarm) => { // listen for alarms
       // if it is a snoozed tab and it is overdue, then open it and remove it from storage
       for (const [key, val] of Object.entries(allItems)) { 
         if (key.startsWith('snoozedTab_')) { 
-          const { url, reopenAt } = val;
+          const { url, reopenAt, recurringId } = val;
 
           if (Date.now() >= reopenAt) {
-            await chrome.tabs.create({ url });
-            if (val.recurringId) {
-              await scheduleNextRecurrence(val.recurringId);
+            await chrome.alarms.clear(key).catch(() => { /* alarm may already be gone */ }); // cancel the now‑unneeded alarm
+            await chrome.tabs.create({ url }); // re-open the tab
+            if (recurringId) { // if snooze has a recurring schedule, put the next one in place
+              await scheduleNextRecurrence(recurringId);
             }
             await chrome.storage.local.remove(key);
           }
