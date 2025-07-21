@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Options.css';
 import tabSnoozeyIcon from '../../assets/img/icon-128.png';
-import coffeeMugIcon from '../../assets/img/coffee-mug.svg';
 import deleteIcon from '../../assets/img/delete.svg';
 import Footer from './Footer';
 
@@ -329,11 +328,10 @@ const Options: React.FC = () => {
               
               <div className="right-side-of-card">
                 <button
-                  className="coffee-button"
+                  className="wake-now-button"
                   onClick={() => handleOpenRecurring(schedule.url)}
-                  data-tooltip="Wake now"
                 >
-                  <img src={coffeeMugIcon} alt="coffee mug" />
+                  Wake Now
                 </button>
 
                 <button
@@ -374,11 +372,10 @@ const Options: React.FC = () => {
 
               <div className="right-side-of-card">
                 <button
-                  className="coffee-button"
+                  className="wake-now-button"
                   onClick={() => handleWakeNow(tab.id)}
-                  data-tooltip="Wake now"
                 >
-                  <img src={coffeeMugIcon} alt="coffee mug" />
+                  Wake Now
                 </button>
                 <button
                   className="delete-button"
