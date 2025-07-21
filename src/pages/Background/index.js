@@ -42,7 +42,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => { // listen for alarms
         }
         
         // reopen the tab
-        await chrome.tabs.create({ url: snoozeInfo.url });
+        await chrome.tabs.create({ url: snoozeInfo.url, active: false });
       }
   
       // remove this entry from storage
@@ -62,7 +62,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => { // listen for alarms
 
           if (Date.now() >= reopenAt) {
             await chrome.alarms.clear(key).catch(() => { /* alarm may already be gone */ }); // cancel the now‑unneeded alarm
-            await chrome.tabs.create({ url }); // re-open the tab
+            await chrome.tabs.create({ url, active: false }); // re-open the tab
             if (recurringId) { // if snooze has a recurring schedule, put the next one in place
               await scheduleNextRecurrence(recurringId);
             }
