@@ -3,6 +3,7 @@ import './Options.css';
 import tabSnoozeyIcon from '../../assets/img/icon-128.png';
 import coffeeMugIcon from '../../assets/img/coffee-mug.svg';
 import deleteIcon from '../../assets/img/delete.svg';
+import Footer from './Footer';
 
 
 interface SnoozedTab {
@@ -393,6 +394,7 @@ const Options: React.FC = () => {
           <p className="no-snoozes-message">No non-recurring snoozes</p>
         )}
       </ul>
+      <Footer />
     </div>
   );
 };

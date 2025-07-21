@@ -4,9 +4,9 @@
 function setTimeSafely(date, hour, minute) {
   date.setHours(hour, minute, 0, 0);
   if (date.getHours() !== hour || date.getMinutes() !== minute) {
-    while (date.getMinutes() !== minute) {
+    do {
       date.setMinutes(date.getMinutes() + 1);
-    }
+    } while (date.getHours() !== hour || date.getMinutes() !== minute);
   }
 }
 
