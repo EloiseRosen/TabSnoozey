@@ -337,7 +337,6 @@ const Options: React.FC = () => {
                 <button
                   className="delete-button"
                   onClick={() => handleDeleteRecurringSnooze(schedule.id)}
-                  data-tooltip="Delete recurring snooze"
                 >
                   <img src={deleteIcon} alt="delete X" />
                 </button>
@@ -380,7 +379,6 @@ const Options: React.FC = () => {
                 <button
                   className="delete-button"
                   onClick={() => handleDeleteSnooze(tab.id)}
-                  data-tooltip="Delete snooze"
                 >
                   <img src={deleteIcon} alt="delete X" />
                 </button>
