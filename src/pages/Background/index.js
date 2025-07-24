@@ -1,5 +1,10 @@
 import { findNextWeeklyOccurrence, findNextMonthlyOccurrence } from  '../../timeUtils'
 
+/**
+ * Ensure that the "checkForOverdue_" alarm is registered.
+ * If the alarm is missing (for example, after a cold‑start of the service worker),
+ * create it again so that the overdue tab check continues to run every 5 mins
+ */
 function ensureOverdueAlarm() {
   chrome.alarms.get('checkForOverdue_', alarm => {
     if (!alarm) {

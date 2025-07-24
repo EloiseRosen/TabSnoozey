@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Toggle that lets the user choose whether to snooze the current tab or 
+ * ALL tabs in the current window.
+ */
 function TabWindowToggle({ toggledToTab, onToggle }) {
   return (
     <div className="toggle-container">

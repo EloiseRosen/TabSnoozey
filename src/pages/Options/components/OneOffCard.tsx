@@ -11,6 +11,12 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
+/**
+ * Presentational card for a single, non‑recurring snoozed tab.
+ *
+ * Renders the title link (can click on title to open the tab without messing with your snooze),
+ * the formatted wake time, and buttons to wake the tab now or delete the snooze.
+ */
 const OneOffCard: React.FC<Props> = ({
   id,
   url,

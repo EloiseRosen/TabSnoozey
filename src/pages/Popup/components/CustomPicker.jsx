@@ -2,6 +2,10 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+/**
+ * Renders the view for selecting a custom date/time. Displays the calendar 
+ * and native `<input type="time">`.
+ */
 function CustomPicker({
   customDate,
   setCustomDate,

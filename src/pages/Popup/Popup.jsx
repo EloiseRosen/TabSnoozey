@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import icon from '../../assets/img/icon-128.png';
 import { 
-  getTimeForTodayOrTomorrow, 
-  getTimeDaysFromNow, 
-  getTimeForNextDayOfWeek,
   findNextWeeklyOccurrence,
   findNextMonthlyOccurrence
 } from '../../timeUtils'

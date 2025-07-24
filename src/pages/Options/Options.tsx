@@ -3,7 +3,7 @@ import OneOffCard from './components/OneOffCard';
 import RecurringCard from './components/RecurringCard';
 import { RecurringConfig } from './formatting';
 import tabSnoozeyIcon from '../../assets/img/icon-128.png';
-import Footer from './Footer';
+import Footer from './components/Footer';
 import './Options.css';
 
 interface SnoozedTab {
@@ -22,6 +22,17 @@ interface RecurringSnooze {
   nextOccurrence: number;
 }
 
+/**
+ * Main Options page (shows all sleeping tabs).
+ *
+ * Loads all snooze entries (one‑off and recurring) from chrome.storage.local,
+ * sort them chronologically, and keep the lists in sync.
+ * Renders 2 sections:
+ *     1. Recurring schedules — (a collection of <RecurringCard/>s).
+ *     2. One‑off snoozes — (a collecion of <OneOffCard/>s).
+ * Includes functionality to wake now (open the tab immediately) or delete
+ * the snooze.
+ */
 const Options: React.FC = () => {
   const [sleepingTabsList, setSleepingTabsList] = useState<SnoozedTab[]>([]);
   const [recurringSnoozesList, setRecurringSnoozesList] = useState<RecurringSnooze[]>([]);
@@ -79,7 +90,9 @@ const Options: React.FC = () => {
     };
   }, []);
 
-
+  /**
+   * Functionality to delete a recurring snooze.
+   */
   async function handleDeleteRecurring(id: string) {
     try {
       // find and remove any pending alarms for this recurring snooze
@@ -130,7 +143,7 @@ const Options: React.FC = () => {
   }
 
   /**
-   * Delete a snoozed tab.
+   * Delete a non-recurring snoozed tab.
    */
   async function handleDeleteOneOff(id: string) {
     try {

@@ -1,6 +1,11 @@
 import React from 'react';
 import { RECURRING_MODES } from '../constants';
 
+
+/**
+ * Toggle that lets the user choose whether to set the recurring snooze
+ * on a repeated weekly level or repeated monthly level.
+ */
 function WeekMonthToggle({ recurringMode, onChange }) {
   return (
     <div className="toggle-container">

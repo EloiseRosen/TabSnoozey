@@ -1,7 +1,7 @@
 import React from 'react';
-import envelopeIcon from '../../assets/img/envelope.svg';
-import personIcon from '../../assets/img/person.svg';
-import coffeeMugIcon from '../../assets/img/coffee-mug.svg';
+import envelopeIcon from '../../../assets/img/envelope.svg';
+import personIcon from '../../../assets/img/person.svg';
+import coffeeMugIcon from '../../../assets/img/coffee-mug.svg';
 
 /**
  * The Footer component displays footer icons for navigation.

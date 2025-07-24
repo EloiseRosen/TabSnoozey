@@ -4,6 +4,10 @@ import RecurringWeek from './RecurringWeek';
 import RecurringMonth from './RecurringMonth';
 import { RECURRING_MODES } from '../constants';
 
+/**
+ * Allows the user to configure a recurring snooze. User selects weekly or
+ * monthly, then we use the RecurringWeek component or the RecurringMonth component.
+ */
 function RecurringPicker({
   recurringMode,
   setRecurringMode,

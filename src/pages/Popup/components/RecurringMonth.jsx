@@ -1,5 +1,10 @@
 import React from 'react';
 
+/**
+ * Renders the view for selecting a recurring monthly snooze. Shows days
+ * 1-31, allowing the user to select desired day. The selected day is highlighted
+ * in pink.
+  */
 function RecurringMonth({ selectedMonthDay, setSelectedMonthDay }) {
   return (
     <div className="month-day-selection">
