@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; 
 import icon from '../../assets/img/icon-128.png';
 import { 
   getTimeForTodayOrTomorrow, 
@@ -10,34 +8,36 @@ import {
   findNextMonthlyOccurrence
 } from '../../timeUtils'
 
+import TabWindowToggle  from './components/TabWindowToggle';
+import PresetButtons    from './components/PresetButtons';
+import CustomPicker     from './components/CustomPicker';
+import RecurringPicker  from './components/RecurringPicker';
 
-const SPECIAL_PAGES_MESSAGE = `Note: Special pages like "chrome-extension://" or "about:" cannot be snoozed.`;
+import {
+  SPECIAL_PAGES_MESSAGE,
+  VIEW_MODES,
+  RECURRING_MODES
+} from './constants';
 
 /**
  * Indicate if URL is a special page that cannot be reopened later.
  */
 function isSpecialPage(url) {
-  return /^(?:about|chrome|chrome-untrusted|chrome-extension|edge|view-source|devtools):/i.test(
-    url
-  );
+  return /^(?:about|chrome|chrome-untrusted|chrome-extension|edge|view-source|devtools):/i.test(url);
 }
 
 
 function Popup() {
-  // views are 
-  // 1. MAIN_MENU
-  // 2. CUSTOM (select a custom one-off date/time)
-  // 3. RECURRING (select weekly/monthly recurring date/time)
-  const [viewMode, setViewMode] = useState('MAIN_MENU');
-  
+  const [viewMode, setViewMode] = useState(VIEW_MODES.MAIN_MENU);
+
   // state for the custom one-off view
   const [customDate, setCustomDate] = useState(new Date());
   const [customTime, setCustomTime] = useState('09:00');
 
-  // state for the recurring view
-  const [recurringMode, setRecurringMode] = useState('WEEK');  // "WEEK" or "MONTH"
-  const [weeklySelectedDays, setWeeklySelectedDays] = useState([false, false, false, false, false, false, false]); // weekly checkboxes for Sun–Sat
-  const [selectedMonthDay, setSelectedMonthDay] = useState(null); // day selection for month (1–31)
+ // state for the recurring view
+  const [recurringMode, setRecurringMode] = useState(RECURRING_MODES.WEEK);
+  const [weeklySelectedDays, setWeeklySelectedDays] = useState(Array(7).fill(false));
+  const [selectedMonthDay, setSelectedMonthDay] = useState(null);
   const [recurringTime, setRecurringTime] = useState('09:00');
 
   // whether toggled to tab or window
@@ -50,12 +50,9 @@ function Popup() {
    */
   async function getTabsToSnooze() {
     if (toggledToTab) {
-      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-      return tabs;
-    } else {
-      const tabs = await chrome.tabs.query({ currentWindow: true });
-      return tabs;
+      return chrome.tabs.query({ active: true, currentWindow: true });
     }
+    return chrome.tabs.query({ currentWindow: true });
   }
 
   /**
@@ -93,21 +90,15 @@ function Popup() {
 
         const snoozeId =  `snoozedTab_${crypto.randomUUID()}`;
 
-        // store the info for this snooze in chrome local storage
-        const snoozeInfo = {
-          url: tab.url,
-          title: tab.title || '',
-          reopenAt: reopenTime
-        };
-        await chrome.storage.local.set({ [snoozeId]: snoozeInfo });
+        await chrome.storage.local.set({
+          [snoozeId]: { url: tab.url, title: tab.title || '', reopenAt: reopenTime }
+        });
 
-        // create alarm
         chrome.alarms.create(snoozeId, { when: reopenTime });
 
         tabIdsToClose.push(tab.id);
       }
 
-      // show alert if any tabs were skipped
       if (hasSkippedTabs) {
         alert(SPECIAL_PAGES_MESSAGE);
       }
@@ -123,25 +114,16 @@ function Popup() {
   }
 
   function resetState() {
-    setViewMode('MAIN_MENU');
+    setViewMode(VIEW_MODES.MAIN_MENU);
     setCustomDate(new Date());
     setCustomTime('09:00');
-    setRecurringMode('WEEK');
-    setWeeklySelectedDays([false, false, false, false, false, false, false]);
+    setRecurringMode(RECURRING_MODES.WEEK);
+    setWeeklySelectedDays(Array(7).fill(false));
     setSelectedMonthDay(null);
     setRecurringTime('09:00');
     setToggledToTab(true);
   }
 
-  const presets = [
-    // { buttonLabel: 'testing: 1 min', calculateTime: () => Date.now() + 1 * 60_000 },
-    { buttonLabel: '1 hour', calculateTime: () => Date.now() + 60 * 60_000 },
-    { buttonLabel: '5pm today', calculateTime: () => getTimeForTodayOrTomorrow(17, 0) },
-    { buttonLabel: '6am tomorrow', calculateTime: () => getTimeDaysFromNow(6, 0, 1) },
-    { buttonLabel: '6am Saturday', calculateTime: () => getTimeForNextDayOfWeek(6, 6, 0) }, // 6 is Saturday
-    { buttonLabel: '9am Monday', calculateTime: () => getTimeForNextDayOfWeek(1, 9, 0) }, // 1 is Monday
-    { buttonLabel: '30 days', calculateTime: () => getTimeDaysFromNow(6, 0, 30) },
-  ];
 
   /**
    * Handle the custom time input.
@@ -167,8 +149,8 @@ function Popup() {
   function handleRecurringConfirm() {
     const [hour, minute] = recurringTime.split(':').map(Number);
     
-    if (recurringMode === 'WEEK') {
-      if (!weeklySelectedDays.some(day => day)) {
+    if (recurringMode === RECURRING_MODES.WEEK) {
+      if (!weeklySelectedDays.some(Boolean)) {
         alert('Please select at least one day of the week');
         return;
       }
@@ -179,7 +161,7 @@ function Popup() {
         time: recurringTime
       });
 
-    } else if (recurringMode === 'MONTH') {
+    } else if (recurringMode === RECURRING_MODES.MONTH) {
       if (!selectedMonthDay) {
         alert('Please select at least 1 day');
         return;
@@ -212,7 +194,6 @@ function Popup() {
           continue;
         }
 
-        // check if this is a special URL that can't be reopened
         if (isSpecialPage(tab.url)) {
           hasSkippedTabs = true;
           continue;
@@ -241,12 +222,9 @@ function Popup() {
         
         // dreate alarm for the first occurrence
         chrome.alarms.create(snoozeId, { when: firstOccurrence });
-        
-        // add to list of tabs to close
         tabIdsToClose.push(tab.id);
       }
 
-      // show alert if any tabs were skipped
       if (hasSkippedTabs) {
         alert(SPECIAL_PAGES_MESSAGE);
       }
@@ -264,52 +242,21 @@ function Popup() {
   return (
     <div className="outer-container">
       <div className="inner-container">
-        {/* tab/window toggle, implemented as a checkbox */}
-        <div className="toggle-container">
-          <span
-            className={`toggle-label ${toggledToTab ? "active" : ""}`}
-            onClick={() => setToggledToTab(true)}
-          >
-            tab
-          </span>
 
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={!toggledToTab}
-              onChange={(e) => setToggledToTab(!e.target.checked)}
-            />
-            <span className="slider"></span>
-          </label>
+        <TabWindowToggle
+          toggledToTab={toggledToTab}
+          onToggle={setToggledToTab}
+        />
 
-          <span
-            className={`toggle-label ${!toggledToTab ? "active" : ""}`}
-            onClick={() => setToggledToTab(false)}
-          >
-            window
-          </span>
-        </div>
-
-        {/* main body: Switch between 1. main menu view, 2. custom picker, 3. recurring picker (Sun-Sat view and month view) */}
-        {viewMode === 'MAIN_MENU' && (
+         {/* main view: Switch between 1. main menu view, 2. custom picker, 3. recurring picker (week view and month view) */}
+        {viewMode === VIEW_MODES.MAIN_MENU && (
           <>
-            {presets.map((preset) => (
-              <button
-                className="dark-pink"
-                key={preset.buttonLabel}
-                onClick={() => {
-                  const reopenTime = preset.calculateTime();
-                  snoozeTab(reopenTime);
-                }}
-              >
-                {preset.buttonLabel}
-              </button>
-            ))}
+            <PresetButtons onSelect={snoozeTab} />
 
-            <button className="med-pink" onClick={() => setViewMode('CUSTOM')}>
+            <button className="med-pink" onClick={() => setViewMode(VIEW_MODES.CUSTOM)}>
               custom time
             </button>
-            <button className="light-pink" onClick={() => setViewMode('RECURRING')}>
+            <button className="light-pink" onClick={() => setViewMode(VIEW_MODES.RECURRING)}>
               recurring
             </button>
 
@@ -325,113 +272,30 @@ function Popup() {
           </>
         )}
 
-        {viewMode === 'CUSTOM' && (
-          <>
-            <DatePicker
-              selected={customDate}
-              onChange={(date) => setCustomDate(date)}
-              inline
-              fixedHeight
-            />
-            <input
-              type="time"
-              value={customTime}
-              onChange={(e) => setCustomTime(e.target.value)}
-            />
-            <br />
-            <button className="dark-pink" onClick={handleSnoozeCustomTime}>
-              Confirm
-            </button>
-            <button className="light-gray" onClick={resetState}>
-              Cancel
-            </button>
-          </>
+        {viewMode === VIEW_MODES.CUSTOM && (
+          <CustomPicker
+            customDate={customDate}
+            setCustomDate={setCustomDate}
+            customTime={customTime}
+            setCustomTime={setCustomTime}
+            onConfirm={handleSnoozeCustomTime}
+            onCancel={resetState}
+          />
         )}
 
-        {viewMode === 'RECURRING' && (
-          <>
-            {/* recurring mode toggle: weekly vs monthly */}
-            <div className="toggle-container">
-              <span
-                className={`toggle-label ${recurringMode === 'WEEK' ? "active" : ""}`}
-                onClick={() => setRecurringMode('WEEK')}
-              >
-                week
-              </span>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={recurringMode === 'MONTH'}
-                  onChange={(e) => {
-                    setRecurringMode(e.target.checked ? 'MONTH' : 'WEEK');
-                  }}
-                />
-                <span className="slider"></span>
-              </label>
-              <span
-                className={`toggle-label ${recurringMode === 'MONTH' ? "active" : ""}`}
-                onClick={() => setRecurringMode('MONTH')}
-              >
-                month
-              </span>
-            </div>
-
-            {recurringMode === 'WEEK' && (
-              <div className="weekly-days-container">
-                {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((dayName, idx) => (
-                  <label key={dayName} className="day-label">
-                    <input
-                      type="checkbox"
-                      checked={weeklySelectedDays[idx]}
-                      onChange={(e) => {
-                        const newDays = [...weeklySelectedDays];
-                        newDays[idx] = e.target.checked;
-                        setWeeklySelectedDays(newDays);
-                      }}
-                    />
-                    {dayName}
-                  </label>
-                ))}
-              </div>
-            )}
-
-            {recurringMode === 'MONTH' && (
-              <div className="month-day-selection">
-                <label>
-                  Select Day of Month
-                </label>
-                <div className="month-day-grid">
-                  {Array.from({ length: 31 }).map((_, idx) => {
-                    const dayNum = idx + 1; // 1-31
-                    return (
-                      <button
-                        key={dayNum}
-                        type="button"
-                        className={`month-day-button ${selectedMonthDay === dayNum ? 'selected' : ''}`}
-                        onClick={() => setSelectedMonthDay(dayNum)}
-                      >
-                        {dayNum}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            <input
-              type="time"
-              value={recurringTime}
-              onChange={(e) => setRecurringTime(e.target.value)}
-            />
-
-            <br />
-            <button className="dark-pink" onClick={handleRecurringConfirm}>
-              Confirm
-            </button>
-            <button className="light-gray" onClick={resetState}>
-              Cancel
-            </button>
-          </>
+        {viewMode === VIEW_MODES.RECURRING && (
+          <RecurringPicker
+            recurringMode={recurringMode}
+            setRecurringMode={setRecurringMode}
+            weeklySelectedDays={weeklySelectedDays}
+            setWeeklySelectedDays={setWeeklySelectedDays}
+            selectedMonthDay={selectedMonthDay}
+            setSelectedMonthDay={setSelectedMonthDay}
+            recurringTime={recurringTime}
+            setRecurringTime={setRecurringTime}
+            onConfirm={handleRecurringConfirm}
+            onCancel={resetState}
+          />
         )}
       </div>
     </div>
