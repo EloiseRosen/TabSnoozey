@@ -1,27 +1,28 @@
 # Tab Snoozey
-A Chrome extension that "snoozes" tabs, allowing you to close them and have them re-open automatically at a specified time. Tab Snoozey also has functionality to snooze whole windows, as well as set recurring snoozes (e.g. Tuesdays and Thursdays at 9am, or Monthly on the 1st at 5pm).
+A Chrome extension that "snoozes" tabs, allowing you to close them and have them re-opened automatically at a specified time. Tab Snoozey also has functionality to snooze whole windows, as well as to set recurring snoozes (e.g. Tuesdays and Thursdays at 9am, or Monthly on the 1st at 5pm).
 
 ## Features
 
-### snooze a tab to a preset time
-Tab Snoozey comes with a list of presets to allow snoozing to popular times in one click.  
+### snooze a tab to a pre-set time
+Snooze to common times in one click with the list of pre-sets.  
 ![Tab Snoozey Presets Feature](./src/assets/img/readme/presets.jpg)
 
 
 ### snooze a tab to a custom time
-If a preset doesn't match the time you want, select a custom time instead.
+If no pre-sets match the time you want, select a custom time instead.
 ![Tab Snoozey Custome Time Feature](./src/assets/img/readme/custom.jpg)
 
 ### set a recurring snooze
-Recurring snoozes can be set by week or month.
+You can set snoozes that recurr every week, or every month.
 ![Tab Snoozey Weekly Recurring Feature](./src/assets/img/readme/recurring-1.jpg)
 ![Tab Snoozey Monthly Recurring Feature](./src/assets/img/readme/recurring-2.jpg)
 
-### view your currently snoozing tabs
+### view your snoozing tabs
+A summary page displays your snoozing tabs, and allows you to wake them up early or delete them.
 ![Tab Snoozey Summary Page](./src/assets/img/readme/summary.jpg)
 
 ### snooze a whole window
-To snooze a whole window, simply use the toggle at the top.
+To snooze a whole window, use the toggle at the top.
 ![Tab Snoozey Window Snooze Feature](./src/assets/img/readme/window.jpg)
 
 ### don't miss snoozes
@@ -37,3 +38,5 @@ These are the only permissions used:
 
 This extension is completely open source! Permissions used can be viewed in the `src/manifest.json` file.
 
+## Support
+If you want to support Tab Snoozey and my other projects, you can donate [here](https://buymeacoffee.com/eloiserosen).
