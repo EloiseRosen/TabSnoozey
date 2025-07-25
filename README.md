@@ -5,18 +5,18 @@ A Chrome extension that "snoozes" tabs, allowing you to close them and have them
 
 ### snooze a tab to a pre-set time
 Snooze to common times in one click with the list of pre-sets.  
-<img src="./src/assets/img/readme/presets.jpg" alt="Tab Snoozey Pre-sets Feature" width="400">
+<img src="./src/assets/img/readme/presets.jpg" alt="Tab Snoozey Pre-sets Feature" width="200">
 
 
 ### snooze a tab to a custom time
 If no pre-sets match the time you want, select a custom time instead.
-<img src="./src/assets/img/readme/custom.jpg" alt="Tab Snoozey Custom Time Feature" width="400">
+<img src="./src/assets/img/readme/custom.jpg" alt="Tab Snoozey Custom Time Feature" width="200">
 
 ### set a recurring snooze
 You can set snoozes that recurr every week, or every month.
 <p float="left">
-  <img src="./src/assets/img/readme/recurring-1.jpg" alt="Tab Snoozey Weekly Recurring Feature" width="400">
-  <img src="./src/assets/img/readme/recurring-2.jpg" alt="Tab Snoozey Monthly Recurring Feature" width="400">
+  <img src="./src/assets/img/readme/recurring-1.jpg" alt="Tab Snoozey Weekly Recurring Feature" width="200">
+  <img src="./src/assets/img/readme/recurring-2.jpg" alt="Tab Snoozey Monthly Recurring Feature" width="200">
 </p>
 
 ### view your snoozing tabs
@@ -25,7 +25,7 @@ A summary page displays your snoozing tabs, and allows you to wake them up early
 
 ### snooze a whole window
 To snooze a whole window, use the toggle at the top.
-<img src="./src/assets/img/readme/window.jpg" alt="Tab Snoozey Window Snooze Feature" width="400">
+<img src="./src/assets/img/readme/window.jpg" alt="Tab Snoozey Window Snooze Feature" width="200">
 
 ### don't miss snoozes
 A check for overdue snoozes runs so that you don't miss any tabs that were supposed to open while your computer was shut down, etc.
