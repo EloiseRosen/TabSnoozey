@@ -1,27 +1,5 @@
 import { findNextWeeklyOccurrence, findNextMonthlyOccurrence } from  '../../timeUtils'
 
-/**
- * Ensure that the "checkForOverdue_" alarm is registered.
- * If the alarm is missing (for example, after a cold‑start of the service worker),
- * create it again so that the overdue tab check continues to run every 5 mins
- */
-function ensureOverdueAlarm() {
-  chrome.alarms.get('checkForOverdue_', alarm => {
-    if (!alarm) {
-      chrome.alarms.create('checkForOverdue_', { periodInMinutes: 5 });
-    }
-  });
-}
-
-ensureOverdueAlarm(); // call once on every service‑worker start‑up
-chrome.runtime.onStartup.addListener(ensureOverdueAlarm); // repeat after browser restart
-
-chrome.runtime.onInstalled.addListener(() => { // listen for when extension is installed/updated
-  chrome.alarms.create('checkForOverdue_', { // set up recurring alarm to check for overdue tabs
-    periodInMinutes: 5,
-  });
-});
-
 chrome.alarms.onAlarm.addListener(async (alarm) => { // listen for alarms
   if (alarm.name.startsWith('snoozedTab_')) {
     try {
@@ -54,29 +32,6 @@ chrome.alarms.onAlarm.addListener(async (alarm) => { // listen for alarms
       await chrome.storage.local.remove(snoozeId);
     } catch (error) {
       console.error('error handling snoozed tab alarm:', error);
-    }
-  } else if (alarm.name.startsWith('checkForOverdue_')) {
-    try {
-      const allItems = await chrome.storage.local.get(null);
-
-      // for each stored item:
-      // if it is a snoozed tab and it is overdue, then open it and remove it from storage
-      for (const [key, val] of Object.entries(allItems)) { 
-        if (key.startsWith('snoozedTab_')) { 
-          const { url, reopenAt, recurringId } = val;
-
-          if (Date.now() >= reopenAt) {
-            await chrome.alarms.clear(key).catch(() => { /* alarm may already be gone */ }); // cancel the now‑unneeded alarm
-            await chrome.tabs.create({ url, active: false }); // re-open the tab
-            if (recurringId) { // if snooze has a recurring schedule, put the next one in place
-              await scheduleNextRecurrence(recurringId);
-            }
-            await chrome.storage.local.remove(key);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error in overdue check:', error);
     }
   }
 });

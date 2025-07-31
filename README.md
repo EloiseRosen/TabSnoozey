@@ -27,9 +27,6 @@ A summary page displays your snoozing tabs, and allows you to wake them up early
 To snooze a whole window, use the toggle at the top.  
 <img src="./src/assets/img/readme/window.jpg" alt="Tab Snoozey Window Snooze Feature" width="270">
 
-### don't miss snoozes
-A check for overdue snoozes runs so that you don't miss any tabs that were supposed to open while your computer was shut down, etc.
-
 ## Permissions Used
 These are the only permissions used:
 1. **storage**: locally store the URLs and the times they should be reopened. This data doesn't leave your browser!

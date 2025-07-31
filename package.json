@@ -1,6 +1,6 @@
 {
   "name": "tab-snoozey",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Chrome extension that snoozes tabs, with custom snooze times and recurring snoozes.",
   "repository": {
     "type": "git",

@@ -70,7 +70,7 @@ export function formatRecurringSchedule(config: RecurringConfig): string {
     }
     
     if (selectedDays.length === 2 && config.days![0] === true && config.days![6] === true) {
-      return `Weekends at ${timeStr}`;
+      return `Weekend days at ${timeStr}`;
     }
     
     return `Every ${selectedDays.join(', ')} at ${timeStr}`;
