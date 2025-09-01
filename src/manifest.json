@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Tab Snoozey",
-  "description": "Snooze tabs and windows and have then automatically re-open at a selected time.",
-  "version": "1.0.1",
+  "description": "Snooze tabs and windows and have them automatically re-open at a selected time.",
+  "version": "1.0.3",
 
   "permissions": [
     "storage",
